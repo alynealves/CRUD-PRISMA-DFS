@@ -1,18 +1,31 @@
-const Router = require('express')
+import {Router} from "express"
 
-const userController = require('../controller/userController')
+import {UserController} from '../controller/userController.js'
 
-const postController = require('../controller/postController')
+import {PostController} from '../controller/postController.js'
+
+import {AuthController} from '../controller/authController.js'
+
+import {Authenticate} from '../middleware/authenticate.js'
 
 const router = Router()
 
-router.get(('/listar'), userController.getAllUsers)
+const userController = new UserController()
+
+const postController = new PostController()
+
+const authController = new AuthController()
+
+const authenticator = new Authenticate()
+
+
+router.get(('/listar'), Authenticate.authenticate, userController.getAllUsers)
 
 router.post(('/criar'), userController.addUser)
 
 router.put(('/atualizar/:id'), userController.updateUsers)
 
-router.delete(('/deletar/:id'), userController.deletUsers)
+router.delete(('/deletar/:id'), Authenticate.authorization, userController.deletUsers)
 
 //--------------------------------------------------------------
 
@@ -24,4 +37,8 @@ router.put(('/atualizarPost/:id'), postController.updatePost)
 
 router.delete(('/deletarPost/:id'), postController.deletePost)
 
- module.exports = router
+//----------------------------------------------------------------
+
+router.post(('/login'), authController.login)
+
+export { router }
