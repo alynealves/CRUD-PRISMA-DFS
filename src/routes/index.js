@@ -6,7 +6,7 @@ import {PostController} from '../controller/postController.js'
 
 import {AuthController} from '../controller/authController.js'
 
-import {Authenticate} from '../middleware/authenticate.js'
+import authentication from '../middleware/authenticate.js'
 
 const router = Router()
 
@@ -16,26 +16,29 @@ const postController = new PostController()
 
 const authController = new AuthController()
 
-const authenticator = new Authenticate()
+//tentar ver depois os métodos de autenticação e autorização pois ainda não estão funcionais
 
+router.get(('/listar'), authentication, userController.getAllUsers)
 
-router.get(('/listar'), Authenticate.authenticate, userController.getAllUsers)
+router.post(('/criar'), authentication, userController.addUser)
 
-router.post(('/criar'), userController.addUser)
+router.put(('/atualizar/:id'), authentication, userController.updateUsers)
 
-router.put(('/atualizar/:id'), userController.updateUsers)
+router.delete(('/deletar/:id'),  authentication, userController.deleteUsers)
 
-router.delete(('/deletar/:id'), Authenticate.authorization, userController.deletUsers)
+router.put(('/resetsenha/:id'),  authentication, userController.updatePassword)
 
 //--------------------------------------------------------------
 
-router.get(('/listarPosts'), postController.getAllPosts)
+router.get(('/listarPosts'), authentication, postController.getAllPosts)
 
-router.post(('/criarPost'), postController.addPost)
+router.post(('/criarPost'), authentication, postController.addPost)
 
-router.put(('/atualizarPost/:id'), postController.updatePost)
+router.put(('/atualizarPost/:id'), authentication, postController.updatePost)
 
-router.delete(('/deletarPost/:id'), postController.deletePost)
+router.delete(('/deletarPost/:id'), authentication, postController.deletePost)
+
+router.get(('/buscaPosts/:user_id'), authentication, postController.getPostsbyUser)
 
 //----------------------------------------------------------------
 

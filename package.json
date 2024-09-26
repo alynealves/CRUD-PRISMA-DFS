@@ -12,12 +12,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "nodemon": "^3.1.7",
     "prisma": "^5.19.1"
   },
   "dependencies": {
     "@prisma/client": "^5.19.1",
     "bcryptjs": "^2.4.3",
     "express": "^4.21.0",
+    "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2"
   }
 }
